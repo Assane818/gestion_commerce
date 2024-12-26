@@ -1,0 +1,69 @@
+@using Newtonsoft.Json
+@model WebGesCommande.Models.Detail
+
+@{
+    var panierJson = TempData["panier"] as string;
+    Panier panier = JsonConvert.DeserializeObject<Panier>(panierJson);
+    ViewData["Title"] = "Create";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Produit" class="control-label"></label>
+                <select asp-for="ProduitId" class="form-control" asp-items="ViewBag.Produits"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="QteCommande" class="control-label"></label>
+                <input asp-for="QteCommande" class="form-control" />
+                <span asp-validation-for="QteCommande" class="text-danger"></span>
+            </div>
+
+            @if (panier?.Details.Count > 0)
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Produit
+                            </th>
+                            <th>
+                                Quantite
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detail in panier.Details)
+                        {
+                            <tr>
+                                <td>
+                                    @detail.Produit.Libelle
+                                </td>
+                                <td>
+                                    @detail.QteCommande
+                                </td>
+                                <td>
+                                    <a asp-action="RemoveDetail" asp-route-id="@detail.ProduitId">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+            <button class="form-group" type="submit" asp-action="AddDetail" class="btn-primary">
+                + Ajouter Détail
+            </button>
+            <button class="form-group" type="submit" class="btn-primary">
+                Create
+            </button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,95 @@
+@model WebGesCommande.Models.Produit
+
+@{
+    ViewData["Title"] = "Modifier un produit";
+}
+
+<div x-data="setup()" :class="{ 'dark': isDark }">
+    <div class="h-full ml-14 mt-5 mb-5 md:ml-64 pt-10">
+        <!-- En-tête -->
+         <div class="bg-gradient-to-r from-purple-400 to-purple-600 shadow-lg rounded-xl p-6 mb-8 transform hover:scale-[1.01] transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <div class="animate-fade-in">
+                    <h1 class="text-4xl font-extrabold text-white">Modifier un Produit</h1>
+                    <div class="h-1 w-32 bg-white/30 rounded-full mt-2"></div>
+                </div>
+                <div class="text-white/70 text-sm">Modifier votre produit</div>
+            </div>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="max-w-2xl mx-auto bg-purple-50 rounded-lg shadow-lg p-8 transition-all duration-300 hover:shadow-purple-300">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data" class="space-y-8">
+                <div asp-validation-summary="ModelOnly" class="text-red-500 text-sm bg-red-100 p-4 rounded-lg"></div>
+                <!-- Champs du formulaire -->
+                <div class="grid grid-cols-1 gap-8">
+                    <div class="form-group group">
+                        <label asp-for="Libelle" class="block text-sm font-medium text-purple-700">Libellé</label>
+                        <input asp-for="Libelle" class="mt-2 block w-full px-4 py-3 bg-white border border-purple-300 rounded-lg shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200" />
+                        <span asp-validation-for="Libelle" class="text-red-400 text-sm mt-1"></span>
+                    </div>
+
+                    <div class="form-group group">
+                        <label asp-for="Prix" class="block text-sm font-medium text-purple-700">Prix</label>
+                        <div class="mt-2 relative rounded-lg shadow-sm">
+                            <input asp-for="Prix" class="block w-full px-4 py-3 bg-white border border-purple-300 rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200" />
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="text-purple-500 sm:text-sm">FCFA</span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Prix" class="text-red-400 text-sm mt-1"></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="form-group group">
+                            <label asp-for="Quantite" class="block text-sm font-medium text-purple-700">Quantité</label>
+                            <input asp-for="Quantite" type="number" min="0" class="mt-2 block w-full px-4 py-3 bg-white border border-purple-300 rounded-lg shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200" />
+                            <span asp-validation-for="Quantite" class="text-red-400 text-sm mt-1"></span>
+                        </div>
+
+                        <div class="form-group group">
+                            <label asp-for="QuantiteSeuil" class="block text-sm font-medium text-purple-700">Seuil d'alerte</label>
+                            <input asp-for="QuantiteSeuil" type="number" min="0" class="mt-2 block w-full px-4 py-3 bg-white border border-purple-300 rounded-lg shadow-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200" />
+                            <span asp-validation-for="QuantiteSeuil" class="text-red-400 text-sm mt-1"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ImageFile" class="block text-sm font-medium text-purple-700">Image</label>
+                        <div class="mt-1 flex justify-center px-6 py-8 border-2 border-purple-300 border-dashed rounded-lg hover:border-purple-500 transition-colors duration-200 bg-white">
+                            <div class="space-y-2 text-center">
+                                <svg class="mx-auto h-12 w-12 text-purple-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <div class="flex text-sm text-purple-400">
+                                    <label class="relative cursor-pointer bg-purple-100 rounded-md font-medium text-purple-700 hover:text-purple-500 p-2 transition-all duration-200">
+                                        <span>Télécharger un fichier</span>
+                                        <input asp-for="ImageFile" type="file" class="sr-only" accept="image/*" />
+                                    </label>
+                                </div>
+                                <p class="text-xs text-purple-500">PNG, JPG jusqu'à 10MB</p>
+                            </div>
+                        </div>
+                        <span asp-validation-for="ImageFile" class="text-red-400 text-sm mt-1"></span>
+                    </div>
+                    
+                </div>
+
+                <!-- Boutons -->
+                <div class="flex items-center justify-end space-x-4 mt-8">
+                    <a asp-action="Index" class="inline-flex items-center px-4 py-2 border border-purple-300 rounded-lg text-sm font-medium text-purple-700 bg-purple-100 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Retour
+                    </a>
+                    <button asp-route-image="@Model.Image" type="submit" class="inline-flex items-center px-6 py-3 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        Modifier le produit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
